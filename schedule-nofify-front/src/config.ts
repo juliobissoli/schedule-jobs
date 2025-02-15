@@ -1,4 +1,4 @@
 
 export const Config = {
-    apiUrl: process.env.API_URL || 'http://localhost:3000'
+    apiUrl: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 }

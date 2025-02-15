@@ -7,19 +7,10 @@ import { Config } from "@/config";
 
 export default function RunJobsList() {
 
-    // const response = await fetch(`http:///run-jobs}`);
-
-
-    // const data = await response.json();
-
-
     useEffect(
-        () => {
-            getRunners()
-        },
+        () => { getRunners() },
         []
     )
-
 
     const [runJobs, setRunJobs] = useState<any | null>(null)
 

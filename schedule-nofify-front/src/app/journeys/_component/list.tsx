@@ -1,26 +1,43 @@
+'use client'
+
 import { Config } from "@/config";
 import JobExecutionItem from "./list-item";
+import { useEffect, useState } from "react";
+import { IJourney } from "@/interfaces/journey.interface";
 
 
 
-export default async function JourneysList() {
-    const response = await fetch(`${Config.apiUrl}/journeys?page=${1}`);
+export default function JourneysList() {
+    useEffect(
+        () => { getJourneys() },
+        []
+    )
+
+    const [journeys, setJourneys] = useState<IJourney[] | null>(null)
 
 
-    const data = await response.json();
+
+    async function getJourneys() {
+        const response = await fetch(`${Config.apiUrl}/journeys`);
+        const data = await response.json();
+        setJourneys(data.rows)
+
+    }
 
 
-    if (!data || !data.rows || data.rows.length == 0) {
+
+
+    if (!journeys) {
         return (
             <div className="w-full p-9 rounded-3xl bg-muted text-center">
-                Sem dados
+                Obtendo dados...
             </div>
         )
     }
 
     return (
         <section className="space-y-4">
-            {data.rows.map((item: any, i: number) => (
+            {journeys.map((item: any, i: number) => (
                 <div key={i} className="">
                     <JobExecutionItem item={item} />
                 </div>

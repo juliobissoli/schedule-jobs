@@ -1,25 +1,43 @@
+'use client'
+
 import { Config } from "@/config";
+import { ICollaborator } from "@/interfaces/collaborator.interface";
 import { Phone, Send } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 
-export default async function CollaboratorsList() {
-    const response = await fetch(`${Config.apiUrl}/collaborators?page=${1}`);
+export default function CollaboratorsList() {
+
+    useEffect(
+        () => { getCollaborators() },
+        []
+    )
+
+    const [collaborators, setCollaborators] = useState<ICollaborator[] | null>(null)
 
 
-    const data = await response.json();
 
-    if (!data || !data.rows || data.rows.length == 0) {
+    async function getCollaborators() {
+        const response = await fetch(`${Config.apiUrl}/collaborators`);
+        const data = await response.json();
+        setCollaborators(data.rows)
+
+    }
+
+    if (!collaborators) {
         return (
             <div className="w-full p-9 rounded-3xl bg-muted text-center">
-                Sem dados
+                Obtendo dados...
             </div>
         )
     }
 
+
+
     return (
         <section className="space-y-4">
-            {data.rows.map((item: any, i: number) => (
+            {collaborators.map((item: any, i: number) => (
                 <Link href={`collaborators/${item._id}`} key={i} className=" p-4 border flex justify-between items-center border-border rounded-2xl overflow-auto hover:border-primary highlight-hover ">
                     <div className="">
                         <p className="text-xl">{item.name}</p>
