@@ -12,8 +12,6 @@ export default async function RunJobsList({ page }: PageProps) {
 
     const data = await response.json();
 
-    console.log(data)
-
     return (
         <div className="space-y-4">
             {data.rows.map((item: any, i:number) => (

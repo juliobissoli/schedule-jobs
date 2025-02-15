@@ -6,6 +6,7 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/s
 import { Plus } from "lucide-react"
 import { useState } from "react"
 import JourneyForm from "./form"
+import { AppPageTitle } from "@/app/components/common/app-components-utils"
 
 
 export default function JourneysHeader() {
@@ -16,17 +17,18 @@ export default function JourneysHeader() {
 
         <div className="flex justify-between gap-2 mt-8 py-3">
             <div>
-                <DebouncedInput value={searToken} change={(e) => {
+                <AppPageTitle>Jornadas cadastradas</AppPageTitle>
+                {/* <DebouncedInput value={searToken} change={(e) => {
                     setSearch(e)
                     console.log(e)
-                    }} />
+                    }} /> */}
             </div>
             <Sheet>
                 <SheetTrigger asChild>
                     <Button size={'icon'}><Plus /></Button>
                 </SheetTrigger>
-                <SheetContent>
-                    <SheetTitle>
+                <SheetContent className="p-0">
+                    <SheetTitle className="p-4">
                         Formuário de jornada
                     </SheetTitle>
 

@@ -81,7 +81,6 @@ export function JourneyActionForm({ onSubmit }: JourneyActionFormProps) {
                     onClick={(e) => {
                         e.preventDefault()
                         onSubmit(form.getValues())
-                        form.reset()
                     }}
                     className="w-full"
                     variant={'outline'}

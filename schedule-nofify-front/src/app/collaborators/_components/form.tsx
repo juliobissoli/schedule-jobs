@@ -39,7 +39,6 @@ export default function CollaboratorForm() {
 
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values, Config.apiUrl)
         try {
             const response = await fetch(`${Config.apiUrl}/collaborators`, {
                 method: 'POST',

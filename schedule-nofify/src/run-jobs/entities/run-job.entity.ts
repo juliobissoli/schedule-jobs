@@ -14,9 +14,9 @@ export interface ILogRunJob {
 
 export interface IRunJobProcess {
     runnerId: string,
-    jobId: string,
-    journeyId: string,
-    collaboratorId: string,
+    // jobId: string,
+    // journeyId: string,
+    // collaboratorId: string,
     action: IJourneyAction,
 }
 

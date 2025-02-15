@@ -21,8 +21,6 @@ export default function CollaboratorSelectJourney({ onSelect }: CollaboratorSele
 
         setToken(str)
 
-        console.log('ta aqui')
-
         if (str != token) {
 
 
@@ -30,8 +28,6 @@ export default function CollaboratorSelectJourney({ onSelect }: CollaboratorSele
 
 
             const data = await response.json();
-
-            console.log(data)
 
             setJourneys(data.rows)
         }

@@ -13,7 +13,6 @@ export default async function JourneysList({ page }: ListProps) {
 
     const data = await response.json();
 
-    console.log(data)
 
     if (!data || !data.rows || data.rows.length == 0) {
         return (

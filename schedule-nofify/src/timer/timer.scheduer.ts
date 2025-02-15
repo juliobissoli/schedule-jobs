@@ -8,11 +8,9 @@ export class TimerScheduler {
         private runJobService: RunJobsService,
     ) {}
 
-    @Cron(CronExpression.EVERY_10_SECONDS)
+    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
     // @Cron('45 * * * * *')
     async scheduleDailyJobs() {
-
-        // con st jobs = await this.jobService.findByDay(new Date())
 
         console.log('==================== CRON START JOBS TODAY ================')
         this.runJobService.startByDay()

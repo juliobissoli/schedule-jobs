@@ -8,6 +8,8 @@ import { AppPageTitle } from "@/app/components/common/app-components-utils";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ICollaborator } from "@/interfaces/collaborator.interface";
+import { ArrowLeft, User } from "lucide-react";
+import Link from "next/link";
 
 
 
@@ -29,14 +31,13 @@ const CollaboratorDetailPage = () => {
         return <h1>Loading..</h1>
     }
 
-    async function  getCollaborator() {
+    async function getCollaborator() {
         const response = await fetch(`${Config.apiUrl}/collaborators/${params.id}`);
-    
+
         const data = await response.json();
-    
-        console.log(data)
+
         setCollaborator(data)
-        
+
     }
 
     if (!collaborator) {
@@ -49,7 +50,13 @@ const CollaboratorDetailPage = () => {
 
     return (
         <>
-            <section className="py-8">
+            <section className="py-8 ">
+                <Link href={'/collaborators'}>
+                    <Button size={'sm'} variant={'ghost'} className="my-8">
+                        <ArrowLeft size={14} />
+                        Voltar
+                    </Button>
+                </Link>
                 <h1 className="text-3xl mb-2">{collaborator.name}</h1>
                 <p className="text-xl text-muted-foreground mb-2">{collaborator.email}</p>
                 <p className="text-xl text-muted-foreground mb-2">{collaborator.phone}</p>
@@ -60,11 +67,6 @@ const CollaboratorDetailPage = () => {
                     <AppPageTitle className="">Jornadas associadas ({collaborator.totalJobs}):</AppPageTitle>
                 </div>
 
-                <CollaboratorSheetAssociateForm collaboratorId={collaborator._id}>
-                    <Button className="w-full py-8" variant={'outline'}>
-                        Associar {collaborator.totalJobs > 0 ? 'nova' : "primeira"} jornada
-                    </Button>
-                </CollaboratorSheetAssociateForm>
 
                 <CollaboratorsJobsList collaboratorId={collaborator._id} />
 

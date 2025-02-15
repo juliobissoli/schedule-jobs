@@ -4,7 +4,7 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/s
 import { Config } from "@/config";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import {  useState } from "react";
+import { useState } from "react";
 import CollaboratorSelectJourney from "./select-journey";
 import { CalendarIcon, Trash } from "lucide-react";
 import { IJourney } from "@/interfaces/journey.interface";
@@ -26,13 +26,14 @@ import { JobFormSchema } from "@/interfaces/job.interface";
 
 interface CollaboratorSheetAssociateFormProps {
     children: React.ReactNode,
-    collaboratorId: string
+    collaboratorId: string,
+    onSuccess: () => void
 }
-export default function CollaboratorSheetAssociateForm({ children, collaboratorId }: CollaboratorSheetAssociateFormProps) {
+export default function CollaboratorSheetAssociateForm({ children, collaboratorId, onSuccess }: CollaboratorSheetAssociateFormProps) {
 
     const { toast } = useToast()
 
-    const router = useRouter()
+    const [isOpen, setIsOpen] = useState(false);
 
 
 
@@ -66,7 +67,6 @@ export default function CollaboratorSheetAssociateForm({ children, collaboratorI
                 daily: formData?.daily ?? false,
                 hour: parseInt(formData.hour)
             }
-            console.log(data, Config.apiUrl)
 
             const response = await fetch(`${Config.apiUrl}/jobs`, {
                 method: 'POST',
@@ -85,14 +85,14 @@ export default function CollaboratorSheetAssociateForm({ children, collaboratorI
             }
             else {
 
-
+                setIsOpen(false)
+                onSuccess()
                 toast({
                     title: 'Sucesso',
                     description: "Colaborador adicionado com sucesso!",
                 })
             }
-
-            router.refresh();
+            // router.refresh();
 
         } catch (error) {
             toast({
@@ -105,7 +105,7 @@ export default function CollaboratorSheetAssociateForm({ children, collaboratorI
 
     return (
 
-        <Sheet>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
                 {children}
             </SheetTrigger>
@@ -219,7 +219,7 @@ export default function CollaboratorSheetAssociateForm({ children, collaboratorI
                                                     Execução diária?
                                                 </FormLabel>
                                                 <FormDescription>
-                                                    Se essa opção habilitada essa jornada ira ser executada todos os dias no horario indicado para esse cobalaborador.
+                                                    Se essa opção estiver habilitada, essa jornada será executada diariamente no horário indicado para esse colaborador.
                                                 </FormDescription>
                                             </div>
                                             <FormControl>

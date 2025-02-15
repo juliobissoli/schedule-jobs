@@ -66,8 +66,6 @@ export class RunJobsService {
   async startByDay(date: Date = new Date()) {
     console.log(`======= Obtem todos os Jobs da dia :  ${date.toISOString()}========`)
 
-
-
     const jobsByDate = await this.jobService.findByDay(date)
 
 
@@ -96,47 +94,40 @@ export class RunJobsService {
     }
 
     try {
-      const newRunJob = await this.create(runJob) // Mantido o await aqui
+      const newRunJob = await this.create(runJob)
+
       if (job?.journey && job.journey.actions.length > 0) {
+         const delay = (job?.hour ?? 0) * 1000 * 60 * 60 
+
 
         // Se a jornada não sequancial adiciona apenas a primaiera action
         if (job.journey.isSequential) {
           const action = job.journey.actions[0]
-          this.handleAddJobToQueue(action, newRunJob)
-
+          this.handleAddJobToQueue(action, newRunJob.id, delay)
         }
 
         // Adiciona todas caso contrario
         else {
           job.journey.actions.map((action: IJourneyAction) => {
-            this.handleAddJobToQueue(action, newRunJob)
+            this.handleAddJobToQueue(action, newRunJob.id, delay)
             return action.trigger
           })
         }
       }
-
     } catch (error) {
       console.log('Job não adicionado, já foi existe na fila de execução')
     }
 
+
   }
 
-  handleAddJobToQueue(action: IJourneyAction, runJob: RunJob) {
-
-    const {job} = runJob
+  handleAddJobToQueue(action: IJourneyAction, runnerId: string, delay?: number) {
 
     const queueItem: IRunJobProcess = {
-      runnerId: runJob.id,
-      jobId: job.id,
-      journeyId: job.journey.id,
-      collaboratorId: job.collaborator.id,
       action: action,
+      runnerId,
     }
 
-    let delay = 0;
-    if (runJob.actionsCompleted === 0) {
-      delay = (job?.hour ?? 0) * 1000 * 60 * 60 // Converte horas em milisegundos
-    }
     this.queueService.addToQueue(queueItem, delay)
   }
 
@@ -148,7 +139,7 @@ export class RunJobsService {
     const runJob = await this.runJobModel.findById(data.runnerId).populate({
       path: 'job',
       populate: { path: 'journey' } // Populando a jornada dentro do job
-    }); console.log(runJob)
+    });
 
     if (!runJob || !runJob.job) {
       throw new Error('Execução não encontrada.');
@@ -173,11 +164,12 @@ export class RunJobsService {
       await this.jobService.update(runJob.job.id, { status: 'completed', completedAt: new Date().toISOString() }) // Adicionado o ID do trabalho
     }
 
-    if (runJob.isSequential && runJob.totalActions < runJob.actionsCompleted && runJob.totalAttempts < 20) {
+
+    if (runJob.isSequential && runJob.totalActions > runJob.actionsCompleted && runJob.totalAttempts < 10) {
       const nextAction = runJob.job.journey.actions[runJob.actionsCompleted]
 
       // Adiciona a proxia action na fila
-      this.handleAddJobToQueue(nextAction, runJob)
+      this.handleAddJobToQueue(nextAction, runJob.id)
     }
 
 
@@ -192,7 +184,7 @@ export class RunJobsService {
 
       /** AQUI DEVE FICAR A IMPLEMENTAÇÃO DE CADA TRIGGER */
 
-      console.log('Vai mandar email ==> ', job.collaboratorEmail)
+      console.log('Send email ==> ', job.collaboratorEmail, 'payload => ', action.payload)
       await this.senderService.senEmail([job.collaboratorEmail as string], 'teste', action.payload)
       return 'completed'
     } catch (error) {
