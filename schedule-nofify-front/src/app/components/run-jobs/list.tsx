@@ -40,6 +40,15 @@ export default function RunJobsList() {
                     {/* {item.collaboratorName} */}
                 </div>
             ))}
+
+            {
+                runJobs.length === 0 &&
+                    (
+                        <div className="w-full p-9 rounded-3xl bg-muted text-center">
+                            nenhum item encontrado
+                        </div>
+                    )
+            }
         </div>
     )
 }
