@@ -19,6 +19,7 @@ async function bootstrap() {
 
   SwaggerModule.setup('api', app, documentFactory);
 
+  console.log('RUN API IN ==> ', process.env.PORT)
 
   await app.listen(process.env.PORT ?? 3000);
 }
