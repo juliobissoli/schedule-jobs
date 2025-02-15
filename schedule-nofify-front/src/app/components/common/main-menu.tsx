@@ -27,6 +27,7 @@ export default function MainMenu() {
                     routes.map(el => (
                         <Link href={el.route} key={el.route} className={pathname === el.route ? 'font-semibold text-primary' : ''}> {/* Adicionando a classe 'underline' se a rota atual corresponder */}
                             {el.label}
+
                         </Link>
                     ))
                 }

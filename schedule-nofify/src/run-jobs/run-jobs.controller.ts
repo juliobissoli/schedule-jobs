@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { RunJobsService } from './run-jobs.service';
 import { CreateRunJobDto } from './dto/create-run-job.dto';
 import { UpdateRunJobDto } from './dto/update-run-job.dto';
@@ -13,8 +13,8 @@ export class RunJobsController {
   }
 
   @Get()
-  findAll() {
-    return this.runJobsService.findAll();
+  findAll(@Query() query: any) {
+    return this.runJobsService.findAll(query);
   }
 
   @Get(':id')

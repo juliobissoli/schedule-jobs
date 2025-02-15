@@ -47,7 +47,7 @@ export function JourneyActionForm({ onSubmit }: JourneyActionFormProps) {
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
                                     <SelectTrigger>
-                                        <SelectValue placeholder="Select a verified email to display" />
+                                        <SelectValue placeholder="Escolha a trigguer" />
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>

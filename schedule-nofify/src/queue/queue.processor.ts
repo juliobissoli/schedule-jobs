@@ -12,7 +12,7 @@ export class QueueProcessor {
 
     @Process(QUEUE_PROCESS)
     async handleProcess(item: BullJob) {
-        console.log('Vai processar a fila ==> ', item.data)
+        console.log('============== PROCESSA ITEM DA FILA ============== \n', item.id)
         await this.runJobService.processJob(item.data)
     }
 }

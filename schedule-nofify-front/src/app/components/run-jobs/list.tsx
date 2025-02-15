@@ -15,7 +15,7 @@ export default async function RunJobsList({ page }: PageProps) {
     console.log(data)
 
     return (
-        <div className="mt-8 space-y-4">
+        <div className="space-y-4">
             {data.rows.map((item: any, i:number) => (
                 <div key={i}>
                     <JobExecutionItem item={item} />

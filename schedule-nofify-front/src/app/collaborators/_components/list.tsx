@@ -24,7 +24,7 @@ export default async function CollaboratorsList({ page }: PageProps) {
     return (
         <section className="space-y-4">
             {data.rows.map((item: any, i: number) => (
-                <Link href={`collaborators/${item._id}`} key={i} className=" p-4 border flex justify-between items-center border-border rounded-2xl overflow-auto">
+                <Link href={`collaborators/${item._id}`} key={i} className=" p-4 border flex justify-between items-center border-border rounded-2xl overflow-auto hover:border-primary highlight-hover ">
                     <div className="">
                         <p className="text-xl">{item.name}</p>
                         <div className=" space-x-4">

@@ -7,5 +7,6 @@ export class CreateRunJobDto {
     totalActions: number;
     collaboratorName: String;
     journeyName: String
-    log: ILogRunJob[]
+    log: ILogRunJob[];
+    isSequential: boolean;
 }

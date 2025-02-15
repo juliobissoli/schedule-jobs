@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, HydratedDocument,  Schema as MongooseSchema} from 'mongoose';
 import { Collaborator } from 'src/collaborators/entities/collaborator.entity';
+import { IQueryFilters } from 'src/commom.interfaces';
 import { Journey } from 'src/journeys/entities/journey.entity';
 
 
@@ -30,7 +31,7 @@ export class Job extends Document {
     collaboratorEmail: String;
 
 
-    @Prop({ required: true, default: 'pending', enum: ['pending', 'in_progress', 'completed'] })
+    @Prop({ required: true, default: 'pending', enum: ['created', 'pending', 'in_progress', 'completed'] })
     status: string;
 
     @Prop({ required: true })
@@ -39,8 +40,8 @@ export class Job extends Document {
     @Prop({ default: false })
     daily: Boolean
 
-    @Prop()
-    delay: number
+    @Prop({default: 0})
+    hour: number
 
     @Prop({ default: null })
     completedAt?: Date;
@@ -55,3 +56,9 @@ export class Job extends Document {
 
 
 export const JobSchema = SchemaFactory.createForClass(Job);
+
+
+export interface IJobQueryFilters extends IQueryFilters {
+    collaboratorId?: string;
+    journeyId?: string;
+  }

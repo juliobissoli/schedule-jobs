@@ -86,3 +86,7 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.highlight-hover {
+  @apply hover:shadow-md dark:hover:shadow-zinc-700 hover:scale-[1.005] transition-all
+}

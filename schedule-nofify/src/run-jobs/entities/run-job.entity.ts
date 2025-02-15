@@ -53,6 +53,10 @@ export class RunJob extends Document {
     @Prop()
     collaboratorName: String;
 
+
+    @Prop({ default: false })
+    isSequential: boolean;
+
     @Prop()
     journeyName: String;
 

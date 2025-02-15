@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateJobDto, CreateJobDtoValidator } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
-import { Job } from './entities/job.entity';
+import { IJobQueryFilters, Job } from './entities/job.entity';
 import { Collaborator } from 'src/collaborators/entities/collaborator.entity';
 import { Journey } from 'src/journeys/entities/journey.entity';
 import { IQueryFilters } from 'src/commom.interfaces';
@@ -36,8 +36,10 @@ export class JobsService  {
       throw new NotFoundException('Journey not found');
     }
 
+
     const createdJob = new this.jobModel({
       ...createJobDto,
+      status: 'created',
       collaboratorEmail: collaborator.email,
       collaboratorPhone: collaborator.phone,
       collaboratorName: collaborator.name,
@@ -54,14 +56,23 @@ export class JobsService  {
     return newJob
   }
 
-
-  async findAll(params?: IQueryFilters) {
-
-    const { page = 1, perPage = 10 } = params || {};
+  
+  async findAll(params?: IJobQueryFilters) {
+    const { page = 1, perPage = 10, collaboratorId, journeyId } = params || {};
     const skip = (page - 1) * perPage;
+
+
+    const query: any = {};
+    if (collaboratorId) {
+      query.collaborator = collaboratorId; // Filtra por collaboratorId
+    }
+    if (journeyId) {
+      query.journey = journeyId; // Filtra por journeyId
+    }
+
     const [rows, total] = await Promise.all([
-      this.jobModel.find().sort({ createdAt: 1 }).skip(skip).limit(perPage).populate('journey').exec(),
-      this.jobModel.countDocuments().exec()
+      this.jobModel.find(query).sort({ createdAt: -1 }).skip(skip).limit(perPage).populate('journey').exec(),
+      this.jobModel.countDocuments(query).exec() // Conta documentos com o mesmo filtro
     ]);
     return {
       rows,

@@ -43,6 +43,9 @@ export class Journey extends Document {
     @Prop({ default: 0 })
     totalJobs: number;
 
+    @Prop({ default: false })
+    isSequential: boolean;
+
     @Prop({ required: true, default: Date.now })
     createdAt: Date;
 

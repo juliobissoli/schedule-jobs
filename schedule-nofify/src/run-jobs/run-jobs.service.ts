@@ -73,14 +73,14 @@ export class RunJobsService {
 
     if (jobsByDate.length > 0) {
       await Promise.all(jobsByDate.map(async (job: Job) => {
-        await this.addJodToQueue(job, date)
+        await this.addJobToQueue(job, date)
 
       })) // Fechamento do Promise.all
     }
 
   }
 
-  async addJodToQueue(job: Job, date: Date) {
+  async addJobToQueue(job: Job, date: Date) {
 
     date.setUTCHours(0, 0, 0, 0)
 
@@ -91,40 +91,64 @@ export class RunJobsService {
       totalActions: job.journey.actions.length,
       collaboratorName: job.collaboratorName,
       journeyName: job.journey.name,
+      isSequential: job.journey.isSequential,
       log: []
     }
 
     try {
       const newRunJob = await this.create(runJob) // Mantido o await aqui
       if (job?.journey && job.journey.actions.length > 0) {
-        job.journey.actions.map((action: IJourneyAction) => {
 
-          const queueItem: IRunJobProcess = {
-            runnerId: newRunJob.id,
-            jobId: job.id,
-            journeyId: job.journey.id,
-            collaboratorId: job.collaborator.id,
-            action: action,
-          }
-          const delay = job?.delay
-          this.queueService.addToQueue(queueItem, delay)
+        // Se a jornada não sequancial adiciona apenas a primaiera action
+        if (job.journey.isSequential) {
+          const action = job.journey.actions[0]
+          this.handleAddJobToQueue(action, newRunJob)
 
-          return action.trigger
-        })
+        }
+
+        // Adiciona todas caso contrario
+        else {
+          job.journey.actions.map((action: IJourneyAction) => {
+            this.handleAddJobToQueue(action, newRunJob)
+            return action.trigger
+          })
+        }
       }
 
     } catch (error) {
-      console.log('Job não adicionado já exciste na fila de execução')
+      console.log('Job não adicionado, já foi existe na fila de execução')
     }
 
+  }
 
+  handleAddJobToQueue(action: IJourneyAction, runJob: RunJob) {
+
+    const {job} = runJob
+
+    const queueItem: IRunJobProcess = {
+      runnerId: runJob.id,
+      jobId: job.id,
+      journeyId: job.journey.id,
+      collaboratorId: job.collaborator.id,
+      action: action,
+    }
+
+    let delay = 0;
+    if (runJob.actionsCompleted === 0) {
+      delay = (job?.hour ?? 0) * 1000 * 60 * 60 // Converte horas em milisegundos
+    }
+    this.queueService.addToQueue(queueItem, delay)
   }
 
 
   async processJob(data: IRunJobProcess) {
-    console.log(data)
+    console.log('============= PROCESSA ITEM NA FILA  =============\n ', data.action.trigger)
 
-    const runJob = await this.runJobModel.findById(data.runnerId).populate('job');
+
+    const runJob = await this.runJobModel.findById(data.runnerId).populate({
+      path: 'job',
+      populate: { path: 'journey' } // Populando a jornada dentro do job
+    }); console.log(runJob)
 
     if (!runJob || !runJob.job) {
       throw new Error('Execução não encontrada.');
@@ -140,21 +164,34 @@ export class RunJobsService {
       payload: data.action.payload,
     });
 
-    runJob.status = statusExec;
-    runJob.actionsCompleted += 1;
+    runJob.status = statusExec
     runJob.totalAttempts += 1;
+    runJob.actionsCompleted = statusExec === 'completed' ? runJob.actionsCompleted + 1 : runJob.actionsCompleted;
+
+
+    if (runJob.totalActions === runJob.actionsCompleted && !runJob.job.daily) {
+      await this.jobService.update(runJob.job.id, { status: 'completed', completedAt: new Date().toISOString() }) // Adicionado o ID do trabalho
+    }
+
+    if (runJob.isSequential && runJob.totalActions < runJob.actionsCompleted && runJob.totalAttempts < 20) {
+      const nextAction = runJob.job.journey.actions[runJob.actionsCompleted]
+
+      // Adiciona a proxia action na fila
+      this.handleAddJobToQueue(nextAction, runJob)
+    }
+
+
 
     await runJob.save();
-
-    console.log('RunJob encontrado:', runJob);
-
-
 
   }
 
 
-  async handleAction(action: IJourneyAction, job: Job) {
+  async handleAction(action: IJourneyAction, job: Job): Promise<'completed' | 'error'> {
     try {
+
+      /** AQUI DEVE FICAR A IMPLEMENTAÇÃO DE CADA TRIGGER */
+
       console.log('Vai mandar email ==> ', job.collaboratorEmail)
       await this.senderService.senEmail([job.collaboratorEmail as string], 'teste', action.payload)
       return 'completed'

@@ -1,10 +1,12 @@
 import * as Joi from 'joi';
 
 export class CreateJobDto {
-    collaborator: string;
-    journey: string;
-    startDate: string;
-    daily: boolean;
+  collaborator: string;
+  journey: string;
+  startDate: string;
+  daily: boolean;
+  hour: number;
+  status?: string
 }
 
 
@@ -31,5 +33,14 @@ export const CreateJobDtoValidator = Joi.object({
   daily: Joi.boolean().required().messages({
     'boolean.base': 'O campo "daily" deve ser um booleano.',
     'any.required': 'O campo "daily" é obrigatório.',
+  }),
+
+
+  hour: Joi.number().integer().min(0).max(23).required().messages({
+    'number.base': 'A hora deve ser um número.',
+    'number.integer': 'A hora deve ser um número inteiro.',
+    'number.min': 'A hora deve ser maior ou igual a 0.',
+    'number.max': 'A hora deve ser menor ou igual a 23.',
+    'any.required': 'A hora é obrigatória.',
   }),
 });

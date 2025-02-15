@@ -1,11 +1,7 @@
 "use client"
 
-import { format } from "date-fns"
-import { ptBR } from 'date-fns/locale'
-
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Badge } from "@/components/ui/badge"
-import { Calendar, Briefcase, ListTodo, User } from "lucide-react" // Importando os ícones necessários
+
 
 interface IJourneyAction {
     delay: number;

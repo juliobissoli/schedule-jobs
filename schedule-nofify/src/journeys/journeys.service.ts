@@ -21,7 +21,6 @@ export class JourneysService {
       throw new BadRequestException(error.details.map((d) => d.message).join(', '));
 
     }
-
     const newJourney = new this.journeyModel(createJourneyDto);
     return newJourney.save();
   }
