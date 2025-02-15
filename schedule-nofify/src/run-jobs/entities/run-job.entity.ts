@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document,  HydratedDocument,  Schema as MongooseSchema } from 'mongoose';
-import { Job } from 'src/jobs/entities/job.entity';
-import { ActionsTrigger, IJourneyAction } from 'src/journeys/entities/journey.entity';
+import { Job } from '../../jobs/entities/job.entity';
+import { ActionsTrigger, IJourneyAction } from '../../journeys/entities/journey.entity';
 
 
 export interface ILogRunJob {

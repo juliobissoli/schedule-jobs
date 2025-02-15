@@ -2,13 +2,9 @@ import { Config } from "@/config";
 import JobExecutionItem from "./list-item";
 
 
-interface ListProps {
-    page?: string;
 
-}
-
-export default async function JourneysList({ page }: ListProps) {
-    const response = await fetch(`${Config.apiUrl}/journeys?page=${page}`);
+export default async function JourneysList() {
+    const response = await fetch(`${Config.apiUrl}/journeys?page=${1}`);
 
 
     const data = await response.json();

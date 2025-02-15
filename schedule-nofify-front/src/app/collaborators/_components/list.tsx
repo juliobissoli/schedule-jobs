@@ -2,13 +2,9 @@ import { Config } from "@/config";
 import { Phone, Send } from "lucide-react";
 import Link from "next/link";
 
-interface PageProps {
-    page?: string;
 
-}
-
-export default async function CollaboratorsList({ page }: PageProps) {
-    const response = await fetch(`${Config.apiUrl}/collaborators?page=${page}`);
+export default async function CollaboratorsList() {
+    const response = await fetch(`${Config.apiUrl}/collaborators?page=${1}`);
 
 
     const data = await response.json();

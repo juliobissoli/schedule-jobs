@@ -1,14 +1,8 @@
 import CollaboratorsList from "./_components/list";
 import CollaboratorsHeader from "./_components/header";
 
-interface PageProps {
-    params: {
-        page: string;
-    };
-}
 
-
-const CollaboratorsPage = async ({ params }: PageProps) => {
+const CollaboratorsPage = async () => {
 
     return (
         <>
@@ -17,7 +11,7 @@ const CollaboratorsPage = async ({ params }: PageProps) => {
                 <CollaboratorsHeader />
             </div>
             <section>
-                <CollaboratorsList page={params.page} />
+                <CollaboratorsList />
             </section>
         </>
     )

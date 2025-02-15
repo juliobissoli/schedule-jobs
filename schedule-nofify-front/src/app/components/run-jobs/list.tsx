@@ -1,24 +1,53 @@
+'use client'
+
 import JobExecutionItem from "./list-item";
-
-interface PageProps {
-    page?: string;
-
-}
-
-export default async function RunJobsList({ page }: PageProps) {
-
-    const response = await fetch(`http://localhost:3000/run-jobs?page=${page}`);
+import { useEffect, useState } from "react";
+import { Config } from "@/config";
 
 
-    const data = await response.json();
+export default function RunJobsList() {
+
+    // const response = await fetch(`http:///run-jobs}`);
+
+
+    // const data = await response.json();
+
+
+    useEffect(
+        () => {
+            getRunners()
+        },
+        []
+    )
+
+
+    const [runJobs, setRunJobs] = useState<any | null>(null)
+
+
+
+    async function getRunners() {
+        const response = await fetch(`${Config.apiUrl}/run-jobs`);
+        const data = await response.json();
+        setRunJobs(data.rows)
+
+    }
+
+    if (!runJobs) {
+        return (
+            <div className="w-full p-9 rounded-3xl bg-muted text-center">
+                Obtendo dados...
+            </div>
+        )
+    }
+
 
     return (
         <div className="space-y-4">
-            {data.rows.map((item: any, i:number) => (
+            {runJobs.map((item: any, i: number) => (
                 <div key={i}>
                     <JobExecutionItem item={item} />
                     {/* {item.collaboratorName} */}
-                    </div>
+                </div>
             ))}
         </div>
     )

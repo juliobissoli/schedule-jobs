@@ -18,8 +18,7 @@ import { SenderModule } from 'src/sender/sender.module';
     JobsModule,
     SenderModule,
     // QueueModule,
-    forwardRef(() => QueueModule), // Usando forwardRef para evitar dependência circular
-
+    forwardRef(() => QueueModule),
   ],
   controllers: [RunJobsController],
   providers: [RunJobsService],

@@ -4,9 +4,8 @@ import { Model } from 'mongoose';
 import { CreateJobDto, CreateJobDtoValidator } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { IJobQueryFilters, Job } from './entities/job.entity';
-import { Collaborator } from 'src/collaborators/entities/collaborator.entity';
-import { Journey } from 'src/journeys/entities/journey.entity';
-import { IQueryFilters } from 'src/commom.interfaces';
+import { Collaborator } from '../collaborators/entities/collaborator.entity';
+import { Journey } from '../journeys/entities/journey.entity';
 
 
 @Injectable()

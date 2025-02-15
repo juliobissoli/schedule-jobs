@@ -4,12 +4,12 @@ import { UpdateRunJobDto } from './dto/update-run-job.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IRunJobProcess, RunJob } from './entities/run-job.entity';
-import { JobsService } from 'src/jobs/jobs.service';
-import { Job } from 'src/jobs/entities/job.entity';
-import { QueueService } from 'src/queue/queue.service';
-import { IJourneyAction } from 'src/journeys/entities/journey.entity';
-import { SenderService } from 'src/sender/sender.service';
-import { IQueryFilters } from 'src/commom.interfaces';
+import { JobsService } from '../jobs/jobs.service';
+import { Job } from '../jobs/entities/job.entity';
+import { QueueService } from '../queue/queue.service';
+import { IJourneyAction } from '../journeys/entities/journey.entity';
+import { SenderService } from '../sender/sender.service';
+import { IQueryFilters } from '../commom.interfaces';
 
 @Injectable()
 export class RunJobsService {

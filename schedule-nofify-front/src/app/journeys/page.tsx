@@ -2,14 +2,9 @@ import JourneysHeader from "./_component/header";
 import JourneysList from "./_component/list";
 
 
-interface PageProps {
-    params: {
-        page: string;
-    };
-}
 
 
-const JourneysPage = async ({ params }: PageProps) => {
+const JourneysPage = async () => {
 
     return (
         <>
@@ -17,7 +12,7 @@ const JourneysPage = async ({ params }: PageProps) => {
                 <JourneysHeader />
             </section>
             <section>
-                <JourneysList page={params.page} />
+                <JourneysList />
             </section>
         </>
     )

@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, HydratedDocument,  Schema as MongooseSchema} from 'mongoose';
-import { Collaborator } from 'src/collaborators/entities/collaborator.entity';
-import { IQueryFilters } from 'src/commom.interfaces';
-import { Journey } from 'src/journeys/entities/journey.entity';
+import { Collaborator } from '../../collaborators/entities/collaborator.entity';
+import { IQueryFilters } from '../../commom.interfaces';
+import { Journey } from '../../journeys/entities/journey.entity';
 
 
 export type JobDocument = HydratedDocument<Job>;
