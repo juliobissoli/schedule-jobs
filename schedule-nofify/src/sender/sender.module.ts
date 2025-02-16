@@ -6,7 +6,7 @@ import { ResendModule } from 'nest-resend';
 @Module({
     imports: [
         ResendModule.forRoot({
-            apiKey: process.env.RESEND_API_KEY ?? 're_XE7C75X1_Lr7B2AsNc3AiQC3KmQaM9z11',
+            apiKey: process.env.RESEND_API_KEY ?? 're_xasxasxasxas',
         }),
     ],
     providers: [SenderService],

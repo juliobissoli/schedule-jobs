@@ -23,14 +23,13 @@ import { SenderModule } from './sender/sender.module';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (config: ConfigService) => {
-        const uri = process.env.DB_HOST ?? 'mongodb+srv://jcsbissoli:Bdxwey3zsRrvCyzN@cluster0.hqmum.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+        const uri = process.env.DB_HOST ?? 'localhost'
         console.log(uri)
         return { uri };
       },
       inject: [ConfigService],
       connectionName: 'default',
     }),
-    // MongooseModule.forRoot('mongodb+srv://jcsbissoli:Bdxwey3zsRrvCyzN@cluster0.hqmum.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'),
     CollaboratorsModule,
     JourneysModule,
     JobsModule,
@@ -43,8 +42,3 @@ import { SenderModule } from './sender/sender.module';
   providers: [AppService],
 })
 export class AppModule { }
-
-
-// Bdxwey3zsRrvCyzN
-
-// jcsbissoli
