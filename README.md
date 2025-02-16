@@ -52,3 +52,9 @@ Para melhor compreensão da estrutura do sistema, segue abaixo o diagrama utiliz
 
 Essa divisão permite uma melhor organização do código e facilita a manutenção e escalabilidade do sistema.
 
+
+## Estrutura do Projeto
+
+### **Localização das Pastas**
+- **Front-end**: A pasta do front-end está localizada em `schedule-nofify/`.
+- **Back-end**: A pasta do back-end está localizada em `schedule-nofify-front/`.
