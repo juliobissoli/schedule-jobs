@@ -10,8 +10,14 @@ Este é um projeto chamado **Schedule Jobs**, uma aplicação front-end que forn
 - **Vercel**: Plataforma para deploy de aplicações Next.js.
 
 ## Getting Started
+Primeiro instale as dependências
 
-Primeiro, execute o servidor de desenvolvimento:
+```bash
+npm install --force
+```
+
+
+Execute o servidor de desenvolvimento:
 
 ```bash
 npm run dev

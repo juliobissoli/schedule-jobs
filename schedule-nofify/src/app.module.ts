@@ -23,7 +23,7 @@ import { SenderModule } from './sender/sender.module';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (config: ConfigService) => {
-        const uri = process.env.DB_HOST ?? 'localhost'
+        const uri = process.env.DB_HOST ?? 'mongodb://admin:secret@localhost'
         console.log(uri)
         return { uri };
       },

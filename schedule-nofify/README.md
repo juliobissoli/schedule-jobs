@@ -56,3 +56,13 @@ $ npm run start:prod
 # testes unitários
 $ npm run test
 ```
+
+
+
+## Documentação
+A API tem uma interface onde é possível visualizar a sua documentação das rotas, via Swagger. Para visualizar basta rodar o app e acessar a rota:
+
+```bash
+$ <base_url>/api
+```
+
